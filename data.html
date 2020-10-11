@@ -1,0 +1,612 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<script type="text/javascript" src="/jsbZcgl/admin_res/js/jquery.min.js"></script>
+<link href="/jsbZcgl/css/jquery-ui.css" rel="stylesheet">
+<script src="/jsbZcgl/js/jquery-ui.js"></script>
+<link href="/jsbZcgl/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/jsbZcgl/admin_res/js/jquery-plugin/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/jsbZcgl/admin_res/js/jquery-plugin/validate/messages_zh.min.js"></script>
+<script type='text/javascript' src="/jsbZcgl/client_res/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+<link href="/jsbZcgl/client_res/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" type="text/css"/>
+<script type='text/javascript' src="/jsbZcgl/dwr/util.js"></script>
+<script type='text/javascript' src="/jsbZcgl/dwr/engine.js"></script>
+<script type='text/javascript' src="/jsbZcgl/third_res/jqPaginator/jqPaginator.js"></script>
+<script type="text/javascript" src="/jsbZcgl/dwr/interface/RegisterUtilServiceDWR.js"> </script>
+<script type="text/javascript" src="/jsbZcgl/js/location.js" ></script>
+<script type="text/javascript" src="/jsbZcgl/js/showdate.js" ></script>
+<link rel="stylesheet" type="text/css" href="/jsbZcgl/css/xcConfirm.css"/>
+<script type="text/javascript" src="/jsbZcgl/js/xcConfirm.js"></script>
+<script type='text/javascript' src="/jsbZcgl/layer/layer.js"></script>
+
+ <style type="text/css" mce_bogus="1">
+     /*            #preview_wrapper {
+                     display: inline-block;
+                     width: 148px;
+                     height: 198px;
+                 }*/
+     #imgpreview_fake1 { /* 该对象用于在IE下显示预览图片 */
+         filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);
+     }
+      #imgpreview_fake2 { /* 该对象用于在IE下显示预览图片 */
+         filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);
+     }
+     #imgpreview_fake3 { /* 该对象用于在IE下显示预览图片 */
+         filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);
+     }
+      .inputstyle{
+         width: 163px;
+         height: 54px;
+         cursor: pointer;
+         font-size: 30px;
+         outline: medium none;
+         position: absolute;
+         filter:alpha(opacity=0);
+         -moz-opacity:0;
+         opacity:0;
+         left:0px;
+         top: 0px;
+     }
+    </style>
+<script type="text/javascript">
+var wait=60;
+function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.value="获取短信验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value="重新发送(" + wait + ")";
+            wait--;
+            setTimeout(function() {
+                time(o);
+            },
+            1000) ;
+        }
+}
+
+
+function addZeroToDate(obj){
+	var beginarrs=obj.split('-');
+	var byear=beginarrs[0];
+	var bmonth=beginarrs[1];
+	var bday=beginarrs[2];
+	if(bmonth.length==1){
+		bmonth='0'+bmonth;
+	}
+	if(bday.length==1){
+		bday='0'+bday;
+	}
+	var nbdate=byear+'-'+bmonth+'-'+bday;
+	return nbdate;
+}
+</script>
+<script type="text/javascript" src="/jsbZcgl/dwr/interface/CodeEntqualcategoryServiceDWR.js"> </script>
+<script type="text/javascript" src="/jsbZcgl/dwr/interface/EnterpriseServiceDWR.js"> </script>
+<script src="/jsbZcgl/js/viewer.js"></script><!--图片预览-->
+<script src="/jsbZcgl/js/main.js"></script><!--图片预览-->
+<link rel="stylesheet" href="/jsbZcgl/css/viewer.css">
+<link rel="stylesheet" type="text/css" href="/jsbZcgl/css/xcConfirm.css"/>
+<script type="text/javascript" src="/jsbZcgl/js/xcConfirm.js"></script>
+<!--图片预览-->
+<!--图片预览 HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+<script type="text/javascript">
+$(function(){
+	if(''!=null && ''=='上报成功！'){
+		window.wxc.xcConfirm('', window.wxc.xcConfirm.typeEnum.success);
+	}
+	if(''!=null && ''=='退回成功！'){
+		window.wxc.xcConfirm('', window.wxc.xcConfirm.typeEnum.success);
+	}
+
+	$("input[name='aggreetk']").click(function(){
+    if($("input[name='aggreetk']").length==1){
+    return;
+    }
+    $("input[name='aggreetk']").removeAttr('checked');
+	$(this).attr('checked', 'checked');
+  });
+})
+  $(document).ready(function(){
+     $(".reg_info_left input").attr("disabled",true);
+     $(".reg_info_left select").attr("disabled",true);
+   	 $("input[xtype='date']").datetimepicker({
+		      format:"Y-m-d",      //格式化日期
+		      timepicker:false,    //关闭时间选项
+		      yearStart:1920,     //设置最小年份
+		      yearEnd:2050,        //设置最大年份
+		      todayButton:false,    //关闭选择今天按钮
+		     // datepicker:false,
+		      step:10 //设置分钟间隔为10分钟
+       });
+
+		dwr.engine.setAsync(false);
+		//获取民族
+		CodeEntqualcategoryServiceDWR.getCodeNations(function(nationlist){
+		 if(nationlist!=null){
+		 	var crrentNation=$("#hnation").val();
+		 	  for(var i=0;i<nationlist.length;i++){
+		 	  	var ncode=nationlist[i].code;
+		 	  	if(ncode==crrentNation){
+		 	  		$("#nation").append("<option value='"+nationlist[i].code+"' selected>"+nationlist[i].name+"</option>");
+		 	  	}else{
+		 	  		$("#nation").append("<option value='"+nationlist[i].code+"' >"+nationlist[i].name+"</option>");
+		 	  	}
+		 	  }
+		 }
+		});
+
+		//获取学历
+		CodeEntqualcategoryServiceDWR.getCodeEducation(function(educationlist){
+		 if(educationlist!=null){
+		 	  var crrentEducation=$("#heducation").val();
+		 	  for(var i=0;i<educationlist.length;i++){
+		 	  	var neducation=educationlist[i].code;
+		 	  	if(crrentEducation==neducation){
+		 	  		$("#education").append("<option value='"+educationlist[i].code+"' selected>"+educationlist[i].name+"</option>");
+		 	  	}else{
+		 	  		$("#education").append("<option value='"+educationlist[i].code+"' >"+educationlist[i].name+"</option>");
+		 	  	}
+		 	  }
+		 }
+		});
+
+		//获取学位
+		CodeEntqualcategoryServiceDWR.getCodeDegree(function(degreelist){
+		 if(degreelist!=null){
+		 	  var crrentDegree=$("#hdegree").val();
+		 	  for(var i=0;i<degreelist.length;i++){
+		 	  	var ndegree=degreelist[i].code;
+		 	  	if(crrentDegree==ndegree){
+		 	  		$("#degree").append("<option value='"+degreelist[i].code+"' selected>"+degreelist[i].name+"</option>");
+		 	  	}else{
+		 	  		$("#degree").append("<option value='"+degreelist[i].code+"' >"+degreelist[i].name+"</option>");
+		 	  	}
+		 	  }
+		 }
+		});
+
+		//获取证件类别
+		CodeEntqualcategoryServiceDWR.getCodeIdType(function(idtypelist){
+		 if(idtypelist!=null){
+		 	  var crrentIdType=$("#hidtype").val();
+		 	  for(var i=0;i<idtypelist.length;i++){
+		 	  	var nidtype=idtypelist[i].code;
+		 	  	if(crrentIdType==nidtype){
+		 	  		$("#idtype").append("<option value='"+idtypelist[i].code+"' selected>"+idtypelist[i].name+"</option>");
+		 	  	}
+		 	  }
+		 }
+		});
+
+		//企业类型
+		EnterpriseServiceDWR.getAllEnterpriseType(function(enttypelist){
+			 if(enttypelist!=null){
+			 	  for(var i=0;i<enttypelist.length;i++){
+			 	  		$("#code_enttype").append("<option value='"+enttypelist[i].code+"' >"+enttypelist[i].name+"</option>");
+			 	  		$("#oldcode_enttype").append("<option value='"+enttypelist[i].code+"' >"+enttypelist[i].name+"</option>");
+			 	  }
+			 }
+		});
+
+		//企业性质
+		EnterpriseServiceDWR.getAllEnterpriseKind(function(kindlist){
+			 if(kindlist!=null){
+			 	  for(var i=0;i<kindlist.length;i++){
+			 	  		$("#code_entnature").append("<option value='"+kindlist[i].code+"' >"+kindlist[i].name+"</option>");
+			 	  		$("#oldcode_entnature").append("<option value='"+kindlist[i].code+"' >"+kindlist[i].name+"</option>");
+			 	  }
+			 }
+
+		});
+
+
+
+		//更新原始企业信息
+		EnterpriseServiceDWR.getEnterpriseById('192103',function(enterprise){
+			if(enterprise!=null){
+
+								//企业名称
+								$("#oldenterpriseName").val(enterprise.name);
+								//工商注册地
+								$("#oldreg_place").val(enterprise.reg_place);
+								//法定代表人
+								$("#oldlegalperson").val(enterprise.legalperson);
+								//邮政编码
+								 $("#oldzip").val(enterprise.zip);
+								 //通讯地址
+								 $("#oldaddress").val(enterprise.address);
+								 //企业类型  CODE_ENTTYPE
+								 $("#oldcode_enttype option").each(function(){
+								 	if($(this).val()==enterprise.code_enttype){
+								 		$(this).attr("selected","selected");
+								 	}
+
+								 });
+								 //企业性质CODE_ENTNATURE
+								 $("#oldcode_entnature option").each(function(){
+								 	if($(this).val()==enterprise.code_entnature){
+								 		$(this).attr("selected","selected");
+								 	}
+								 });
+								 //将老企业id封装的hidden标签
+								 $("#oldchooseedentid").val(enterprise.id);
+								 //将老企业的省份编码写入hidden中
+								 $("#reg_province").val(enterprise.reg_province);
+			}
+
+		});
+
+
+		//更新原始企业信息
+		EnterpriseServiceDWR.getEnterpriseById('78400',function(enterprise){
+			if(enterprise!=null){
+
+								//企业名称
+								$("#enterpriseName").val(enterprise.name);
+								//工商注册地
+								$("#reg_place").val(enterprise.reg_place);
+								//法定代表人
+								$("#legalperson").val(enterprise.legalperson);
+								//邮政编码
+								 $("#zip").val(enterprise.zip);
+								 //通讯地址
+								 $("#address").val(enterprise.address);
+								 //企业类型  CODE_ENTTYPE
+								 $("#code_enttype option").each(function(){
+								 	if($(this).val()==enterprise.code_enttype){
+								 		$(this).attr("selected","selected");
+								 	}
+
+								 });
+								 //企业性质CODE_ENTNATURE
+								 $("#code_entnature option").each(function(){
+								 	if($(this).val()==enterprise.code_entnature){
+								 		$(this).attr("selected","selected");
+								 	}
+								 });
+								 //将老企业id封装的hidden标签
+								 $("#chooseedentid").val(enterprise.id);
+								 //将老企业的省份编码写入hidden中
+								 $("#newreg_province").val(enterprise.reg_province);
+			}
+
+		});
+
+
+
+		//企业列表
+			$( "#enterpriseName" ).autocomplete({
+
+			            source: function( request, response ) {
+							EnterpriseServiceDWR.getAllEnterpriseByInput(request.term,function(enterpriselist){
+							 if(enterpriselist!=null){
+				                        response( $.map(enterpriselist, function( item ) { // 此处是将返回数据转换为 JSON对象，并给每个下拉项补充对应参数
+				                            return {
+				                                 // 设置item信息
+				                                 label:item.name, // 下拉项显示内容
+				                                 value:item.name,   // 下拉项对应数值
+				                                 desc:item.id
+				                            }
+				                        }));
+							 }
+						 });
+			          },
+			        select:function(event,ui){
+			        //根据id获取对象
+						//ui.item.value  企业id  根据id获取企业对象
+						dwr.engine.setAsync(false);
+						EnterpriseServiceDWR.getEnterpriseById(ui.item.desc,function(enterprise){
+							if(enterprise!=null){
+								//企业名称
+								//$("#enterpriseName").val(enterprise.name);
+								//工商注册地
+								$("#reg_place").val(enterprise.reg_place);
+								//法定代表人
+								$("#legalperson").val(enterprise.legalperson);
+								//邮政编码
+								 $("#zip").val(enterprise.zip);
+								 //通讯地址
+								 $("#address").val(enterprise.address);
+								 //企业类型  CODE_ENTTYPE
+								 $("#code_enttype option").each(function(){
+								 	if($(this).val()==enterprise.code_enttype){
+								 		$(this).attr("selected","selected");
+								 	}
+
+								 });
+								 //企业性质CODE_ENTNATURE
+								 $("#code_entnature option").each(function(){
+								 	if($(this).val()==enterprise.code_entnature){
+								 		$(this).attr("selected","selected");
+								 	}
+
+								 });
+
+								 //将选中的企业id封装的hidden标签  提交时验证是否选则了企业  chooseedentid
+								 $("#chooseedentid").val(enterprise.id);
+								 //将新企业的省份编码写入hidden中
+								 $("#newreg_province").val(enterprise.reg_province);
+
+							}
+						});
+						dwr.engine.setAsync(true);
+
+			         }
+			});
+		dwr.engine.setAsync(true);
+ });
+
+  function register(regFlowId,status){
+  	if(status=="2"){
+  	    if(!$('#aggreetk').is(':checked')){
+				window.wxc.xcConfirm("请认真阅读承诺书所列条款!", window.wxc.xcConfirm.typeEnum.info);
+				return;
+			}
+  		//	上报
+  		window.wxc.xcConfirm("确定审查通过，进行上报操作！", window.wxc.xcConfirm.typeEnum.confirm,{onOk:function(){
+  		     $("#form1").onsubmit=layer.load(1,{offset: ['40%','50%'],shade: [0.1,'#666666'],area: ['10%','10%']});
+  			 $("#form1").attr('action',"/jsbZcgl/client/registrationReview/censor/report.htm?registerFlowId="+regFlowId+"&status=2").submit();
+  		}});
+  	}else if(status=="3"){
+  		//	退回
+  		window.wxc.xcConfirm("请输入退回原因！", window.wxc.xcConfirm.typeEnum.input,{onOk:function(){
+  			$("#suggestion").val($('.inputBox').val());
+  			 $('input').attr("disabled",false);
+  			  $("#form1").onsubmit=layer.load(1,{offset: ['40%','50%'],shade: [0.1,'#666666'],area: ['10%','10%']});
+  			$("#form1").attr('action',"/jsbZcgl/client/registrationReview/censor/report.htm?registerFlowId="+regFlowId+"&status=3").submit();
+  		  }});
+  	}
+  }
+</script>
+</head>
+
+<body>
+<form id="form1" name="form1" action="" method="post" enctype="multipart/form-data">
+<input type="hidden" id="suggestion" name="suggestion" value=""/>
+<input type="hidden" id="id" name="id" value="491840"/>
+<!-- 新企业id -->
+<input type="hidden" id="chooseedentid" name="chooseedentid" value=""/>
+<!-- 老企业id -->
+<input type="hidden" id="oldchooseedentid" name="oldchooseedentid" value=""/>
+<!--01 是否跨省  默认是0   0否     1是-->
+<input type="hidden" id="isBeyond" name="isBeyond" value="0"/>
+<!--一建  全专业代码  是0100-->
+<input type="hidden" id="allProfession" name="allProfession" value="0100"/>
+<!--老企业省份代码-->
+<input type="hidden" id="reg_province" name="reg_province" value=""/>
+<!--新企业省份代码-->
+<input type="hidden" id="newreg_province" name="newreg_province" value=""/>
+
+<!--业务类型 01	初始注册  02	变更注册	03	增项注册	04	注销注册	05	重新注册-->
+<input type="hidden" id="code_processtype" name="code_processtype" value="02"/>
+<!--01 一级建造师 02 一级临时 03 二级建造师 04 二级临时 05 勘察设计-->
+<input type="hidden" id="exams_code" name="exams_code" value="01"/>
+
+
+<div class="scroll-gd-tools scroll-gd-bn">
+<div class="place"> <span>位置：</span>
+  <ul class="placeul">
+    <li><a href="#" >注册申报</a></li>
+    <li><a href="#">一建</a></li>
+    <li><a href="JavaScript:void(0);">变更注册</a></li>
+  </ul>
+</div>
+
+</div>
+<div class="rightinfo scroll-gd-info">
+  <div class="ibox-content">
+    <div class="reg_info_left">
+            <h2>基本信息</h2>
+      <table width="100%">
+        <tr>
+          <td width="10%">姓名</td>
+          <td width="15%"><input class="reg_info_t_input" name="name"  id="name"   type="text" value="刘东升" readonly></td>
+          <td width="10%">性别</td>
+          <td width="15%">
+          	<select class="reg_info_t_input"  name="sex" id="sex" >
+
+          		<option value='1'  class="reg_info_t_input"  selected>男</option>
+          		<option value='2'  class="reg_info_t_input"  >女</option>
+
+           </select>
+          </td>
+            <td rowspan="3" width="5%" style="text-align:center;">
+            	<img src="/jsbZcgl/servlet/ShowImageServlet?action=displaypic&id=6BC5C32F4996FBF8CFF1DB46EF62198E&pictype=1" height="120" />
+            </td>
+        </tr>
+        <tr>
+          <td>民族</td>
+          <td>
+          <input type="hidden" name="hnation" id="hnation" value="01" />
+          <select class="reg_info_t_input" style="width:60px;float:left" name="nation" id="nation" >
+            </select></td>
+          <td>电子邮箱</td>
+          <td><input class="reg_info_t_input" name="email" id="email" type="text" value="973268152@qq.com" ></td>
+        </tr>
+        <tr>
+          <td>证件类型</td>
+          <td>
+          <input type="hidden" name="hidtype" id="hidtype" value="1" />
+          <select class="reg_info_t_input"  name="idtype" id="idtype" disabled>
+            </select></td>
+          <td>证件号码</td>
+          <td><input class="reg_info_t_input" id="idnumber" name="idnumber" type="text" value="210106196810083339" disabled>
+           </td>
+        </tr>
+        <tr>
+          <td>手机号码</td>
+          <td ><input class="reg_info_t_input" name="phone" id="phone" type="text" value="17795575607" disabled></td>
+          <td></td>
+          <td></td>
+            <td>
+          		<div class="toolsli" style=" width:109px; margin:0">
+		        <ul class="toollist " style=" margin:0px;width:109px;">
+		            <li  style="margin:0px;">
+		            <img  class='uploadedpic'  src="/jsbZcgl/servlet/ShowImageServlet?action=displaypic&id=6BC5C32F4996FBF8CFF1DB46EF62198E&pictype=12&random=0.05979073" width="100" height="40">
+		            </li>
+		        </ul>
+		        </div>
+       	  </td>
+        </tr>
+      </table>
+      <h2>学历信息</h2>
+      <table width="100%" >
+        <tr>
+          <td width="10%">毕业院校</td>
+          <td width="15%">
+            <div>
+	        <input class="reg_info_t_input"  id="school" name="school" value="沈阳工业大学" type="text" >
+            </div>
+          </td>
+          <td width="10%">所学专业</td>
+          <td width="15%"><input class="reg_info_t_input"   id="profession" name="profession"  type="text" value="机械制造与设备" ></td>
+        </tr>
+        <tr>
+          <td>学历</td>
+          <td>
+	          <input type="hidden"  name="heducation" id="heducation"  value="5"/>
+	           <select class="reg_info_t_input"  name="education" id="education" ></select>
+			</td>
+          <td>学位</td>
+          <td>
+	          <input type="hidden"  name="hdegree" id="hdegree"   value="5"  >
+	          <select class="reg_info_t_input"  name="degree" id="degree" > </select>
+			</td>
+        </tr>
+        <tr>
+          <td>毕业时间</td>
+          <td>
+
+
+		          <input  class="reg_info_t_input" id="edu_gdate" name="edu_gdate"   type="text" value="1991-7-29 "  />
+
+			</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+      <h2>变更后企业信息</h2>
+      <table width="100%" id="compTable">
+        <tr>
+          <td width="10%">企业名称</td>
+          <td width="15%">
+            <div>
+	        <input id="enterpriseName" name="enterpriseName" title="type &quot;a&quot;" class="reg_info_t_input">
+            </div>
+          </td>
+          <td width="10%">企业性质</td>
+          <td width="15%"><select class="reg_info_t_input" name="code_entnature"  id="code_entnature">
+            </select></td>
+        </tr>
+        <tr>
+          <td>工商注册地</td>
+          <td><input class="reg_info_t_input" name="" type="text" id="reg_place"  name="reg_place"></td>
+          <td>法定代表人</td>
+          <td><input class="reg_info_t_input" name="" type="text" id="legalperson" name="legalperson"></td>
+        </tr>
+        <tr>
+          <td>企业类型</td>
+          <td><select class="reg_info_t_input"  name="code_enttype" id="code_enttype">
+            </select></td>
+          <td>邮政编码</td>
+          <td><input class="reg_info_t_input" name="" type="text" id="zip" name="zip"></td>
+        </tr>
+        <tr>
+          <td>通讯地址</td>
+          <td colspan="3"><input class="reg_info_t_input" name="" type="text" id="address"  id="address"></td>
+        </tr>
+      </table>
+      <h2>变更前企业信息</h2>
+      <table width="100%" id="compNewTable">
+        <tr>
+          <td width="10%">企业名称</td>
+          <td width="15%">
+            <div>
+	        <input id="oldenterpriseName" name="oldenterpriseName" title="type &quot;a&quot;" class="reg_info_t_input">
+            </div>
+          </td>
+          <td width="10%">企业性质</td>
+          <td width="15%"><select class="reg_info_t_input" name="oldcode_entnature"  id="oldcode_entnature">
+            </select></td>
+        </tr>
+        <tr>
+          <td>工商注册地</td>
+          <td><input class="reg_info_t_input" name="" type="text" id="oldreg_place"  name="oldreg_place"></td>
+          <td>法定代表人</td>
+          <td><input class="reg_info_t_input" name="" type="text" id="oldlegalperson" name="oldlegalperson"></td>
+        </tr>
+        <tr>
+          <td>企业类型</td>
+          <td><select class="reg_info_t_input"  name="oldcode_enttype" id="oldcode_enttype">
+            </select></td>
+          <td>邮政编码</td>
+          <td><input class="reg_info_t_input" name="" type="text" id="oldzip" name="oldzip"></td>
+        </tr>
+        <tr>
+          <td>通讯地址</td>
+          <td colspan="3"><input class="reg_info_t_input" name="" type="text" id="oldaddress"  id="oldaddress"></td>
+        </tr>
+      </table>
+      <h2 style="display:none">可以进行变更申请注册的专业</h2>
+      <h2>劳动合同有效期</h2>
+           <table width="100%" >
+ 				<tr>
+ 				<td width="8%">开始日期:</td>
+ 				<td width="20%"><input class="reg_info_t_input" xtype='date' name="ldhtyxqstart" id="ldhtyxqstart" type="text"  value="2020-06-08"></td>
+ 				<td width="8%">结束日期:</td>
+ 				<td width="20%"><input class="reg_info_t_input" xtype='date' name="ldhtyxqend" id="ldhtyxqend" type="text" value="2021-06-07"></td>
+ 				</tr>
+ 			</table>
+    </div>
+
+    <div class="reg_info_right docs-pictures ibox-content">
+      <h2>个人身份证明材料(身份证正反面)</h2>
+      <div class="toolsli">
+        <ul class="toollist">
+          <li>
+              <div class="toolsli_a"><img src="/jsbZcgl/servlet/ShowImageServlet?action=displaypic&id=6BC5C32F4996FBF8CFF1DB46EF62198E&pictype=2" width="100" height="60" style="margin-top: 20px;"></div>
+              <span><a href="JavaScript:void(0);" >身份证正面</a></span>
+          </li>
+          <li>
+              <div class="toolsli_a"><img src="/jsbZcgl/servlet/ShowImageServlet?action=displaypic&id=6BC5C32F4996FBF8CFF1DB46EF62198E&pictype=3" width="100" height="60" style="margin-top: 20px;"></div>
+              <span><a href="JavaScript:void(0);" >身份证反面</a></span>
+          </li>
+        </ul>
+      </div>
+      <h2>个人身份证明材料(手持身份证半身照)</h2>
+      <div class="toolsli">
+        <ul class="toollist">
+          <li>
+              <div class="toolsli_a"><img src="/jsbZcgl/servlet/ShowImageServlet?action=displaypic&id=6BC5C32F4996FBF8CFF1DB46EF62198E&pictype=4" width="100" height="60" style="margin-top: 20px;"></div>
+              <span><a href="JavaScript:void(0);">手持身份证半身照</a></span>
+          </li>
+        </ul>
+      </div>
+      <h2>个人承诺书</h2>
+      <span class='cn' style='text-indent:2em;'>本人申请变更注册，注册身份证号为：210106196810083339并已知悉相关法律法规及《注册建造师管理规定》的相关要求。现郑重承诺如下：</span><span class='cn' style='text-indent:2em;'>1.本人已在系统中进行实名认证，手机号为：17795575607以上均为本人办理。</span><span class='cn' style='text-indent:2em;'>2.本人已与中冶美利安装工程有限公司解除劳动合同，该单位已停止为本人缴纳社保。现本人受聘且只受聘于绍兴市鹏程设备安装实业有限公司,为该单位职工，并依法与其签订劳动合同，该单位已按期为本人缴纳社保。</span><span class='cn' style='text-indent:2em;'>3.在申请一级建造师变更注册注册时，本人所填内容及提交信息均真实、合法、有效，未隐瞒有关建造师禁止行为的信息，如有虚假愿承担由此产生的一切法律后果。</span>
+      <span class="cn" style="text-indent:2em;margin-top:0 10px;font-size:15px;"><input type="checkbox"  name="aggreeRe" id="aggreeRe" checked="checked" disabled="disabled"/>本人作出上述承诺。</span>
+
+	      <h2>解聘单位承诺书</h2>
+	      <span class='cn' style='text-indent:2em;'>本单位已知悉相关法律法规及《注册建造师管理规定》的相关要求。本单位郑重承诺如下：</span><span class='cn' style='text-indent:2em;'>1、我单位已与刘东升（女士/先生）依法解除劳动合同，并终止为其缴纳社保。</span><span class='cn' style='text-indent:2em;'>2、在申请一级建造师注册时，本单位提交的所有信息均真实、合法、有效，未隐瞒有关建造师禁止行为的信息，如有虚假愿承担由此产生的一切法律后果。</span>
+	      <span class="cn" style="text-indent:2em;"><input type="checkbox"  name="aggreetk" id="aggreeOldtk" checked="checked" disabled="disabled"/>本单位作出上述承诺。</span>
+	      <h2>受聘单位承诺书</h2>
+	      <span class='cn' style='text-indent:2em;'>本单位已知悉相关法律法规及《注册建造师管理规定》的相关要求。本单位郑重承诺如下：</span><span class='cn' style='text-indent:2em;'>1、我公司聘用刘东升（女士/先生）作为我公司职工，依法与其签订劳动合同，并为其缴纳社保。</span><span class='cn' style='text-indent:2em;'>2、在申请一级建造师注册时，本单位提交的所有信息均真实、合法、有效，未隐瞒有关建造师禁止行为的信息，如有虚假愿承担由此产生的一切法律后果。</span>
+
+	       <span class="cn" style="text-indent:2em;"><input type="checkbox"  name="aggreetk" id="aggreetk" checked="checked" disabled="disabled"/>本单位作出上述承诺。</span>
+
+
+    </div>
+  </div>
+</div>
+</form>
+</body>
+</html>
