@@ -4,10 +4,9 @@ import asyncio
 import os
 import psutil
 import requests
-from login import loginProcessing
+from jzszccocgovcn.utils.login import loginProcessing
 from lxml import etree
-from SqlConn import SQLConnection
-
+from jzszccocgovcn.utils.SqlConn import SQLConnection
 
 
 IMAGEDATA = f"{os.path.dirname(__file__)}/IMAGE"
@@ -19,19 +18,18 @@ class ReportProcessing:
 
     def __init__(self):
         self.login = loginProcessing()
-        self.headers = self.addCookieToHeaders()
+        self.addCookieToHeaders()
         self.sql = SQLConnection()
 
     def addCookieToHeaders(self):
         cookies = self.login.llogin()
-        headers = {
+        self.headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'Connection': 'keep-alive',
             'Cookie': cookies,
             'Host': 'jzszc.coc.gov.cn',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36'
         }
-        return headers
 
     async def downloadContent(self, semaphore, link):
         async with semaphore:
@@ -41,46 +39,62 @@ class ReportProcessing:
                     return content
 
     def itemProcessing(self, registerFlowId, future):
+
         html = etree.HTML(future.result())
+
         item = {
             "name": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[1]/tr[1]/td[2]/input/@value")),
+                "//*[@id='name']/@value")),
             "gender": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[1]/tr[1]/td[4]/select/option[@selected]/text()")),
+                "//*[@id='sex']/option[@selected]/text()")),
             "nation": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[1]/tr[2]/td[2]/input/@value")),
+                "//*[@id='nation']/option[@selected]/text()")),
             "email": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[1]/tr[2]/td[4]/input/@value")),
+                "//*[@id='email']/@value")),
             "idType": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[1]/tr[3]/td[2]/input/@value")),
+                "//*[@id='idtype']/option[@selected]/text()")),
             "idNo": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[1]/tr[3]/td[4]/input/@value")),
+                "//*[@id='idnumber']/@value")),
             "phone": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[1]/tr[4]/td[2]/input/@value")),
+                "//*[@id='phone']/@value")),
             "school": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[2]/tr[1]/td[2]/div/input/@value")),
+                "//*[@id='school']/@value")),
             "major": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[2]/tr[1]/td[4]/input/@value")),
+                "//*[@id='profession']/@value")),
             "education": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[2]/tr[2]/td[2]/input/@value")),
+                "//*[@id='education']/option[@selected]/text()")),
             "degree": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[2]/tr[2]/td[4]/input/@value")),
+                "//*[@id='degree']/option[@selected]/text()")),
             "graduation": "".join(html.xpath(
-                "//div[@class='ibox-content']/div[@class='reg_info_left']/table[2]/tr[3]/td[2]/input/@value")),
-            "companyNameNow": "",
-            "companyNatureNow": "",
-            "companyRegistrationPlaceNow": "",
-            "companyLegalPersonNow": "",
-            "companyTypeNow": "",
-            "postNoNow": "",
-            "addressNow": "",
-            "companyNameBefore": "",
-            "companyNatureBefore": "",
-            "companyRegistrationPlaceBefore": "",
-            "companyLegalPersonBefore": "",
-            "companyTypeBefore": "",
-            "postNoBefore": "",
-            "addressBefore": "",
+                "//*[@id='edu_gdate']/@value")),
+            "companyNameNow": "".join([i for i in html.xpath(
+                "//*[@id='enterpriseName']/@value") if i]),
+            "companyNatureNow": "".join(html.xpath(
+                "//*[@id='code_entnature']/option[@selected]/text()")),
+            "companyRegistrationPlaceNow": "".join(html.xpath(
+                "//*[@id='reg_place']/@value")),
+            "companyLegalPersonNow": "".join(html.xpath(
+                "//*[@id='legalperson']/@value")),
+            "companyTypeNow": "".join(html.xpath(
+                "//*[@id='code_enttype']/option[@selected]/text()")),
+            "postNoNow": "".join(html.xpath(
+                "//*[@id='zip']/@value")),
+            "addressNow": "".join(html.xpath(
+                "//*[@id='address']/@value")),
+            "companyNameBefore": "".join(html.xpath(
+                "//*[@id='oldenterpriseName']/@value")),
+            "companyNatureBefore": "".join(html.xpath(
+                "//*[@id='oldcode_entnature']/option[@selected]/text()")),
+            "companyRegistrationPlaceBefore": "".join(html.xpath(
+                "//*[@id='oldreg_place']/@value")),
+            "companyLegalPersonBefore": "".join(html.xpath(
+                "//*[@id='oldlegalperson']/@value")),
+            "companyTypeBefore": "".join(html.xpath(
+                "//*[@id='oldcode_enttype']/option[@selected]/text()")),
+            "postNoBefore": "".join(html.xpath(
+                "//*[@id='oldzip']/@value")),
+            "addressBefore": "".join(html.xpath(
+                "//*[@id='oldaddress']/@value")),
             "startDate": "".join(html.xpath(
                 "//div[@class='ibox-content']/div[@class='reg_info_left']/table[5]/tr[1]/td[2]/input/@value")),
             "endDate": "".join(html.xpath(
@@ -93,8 +107,6 @@ class ReportProcessing:
                 ["http://jzszc.coc.gov.cn" + i for i in html.xpath("//div[@class='toolsli_a']/img/@src")]),
             "registerFlowId": registerFlowId,
         }
-        print(item)
-        print('-' * 100)
         self.sql.conn.ping(reconnect=True)
         item_info = {"registerFlowId": item["registerFlowId"]}
         imageList = [(link, f"{IMAGEDATA}/{item['name'] + item['idNo'][-8:]}-{index}.jpg") for index, link in

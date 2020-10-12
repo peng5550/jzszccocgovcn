@@ -1,4 +1,4 @@
-from chaojiying import Chaojiying_Client
+from jzszccocgovcn.utils.chaojiying import Chaojiying_Client
 import requests
 
 
@@ -8,7 +8,7 @@ import requests
 USERNAME = "ziyougang"
 PASSWORD = "Aa123456."
 COOKIE_FILE = "./cookies.txt"
-CAPTCHA_PATH = "./captcha.jpg"
+CAPTCHA_PATH = "captcha.jpg"
 HEADERS = {
     'Host': 'jzszc.coc.gov.cn',
     'Connection': 'keep-alive',
@@ -62,20 +62,16 @@ class loginProcessing:
             "pword1": PASSWORD,
             "yzm": code,
         }
-        # print(formData)
         resp = self.sess.post(loginUrl, data=formData)
-        # print(resp.text)
-        # print('-'*100)
         response = self.sess.get("http://jzszc.coc.gov.cn/jsbZcgl/client/registrationReview/censor/goreport.htm?registerFlowId=1112344&processtypecode=02&sbzt=1&registerId=&examsCode%20=").text
-        # print(response)
-        if "刘东升" in response:
+        print(response)
+        if "无标题文档" in response:
             cookies = self.sess.cookies.get_dict()
-            # with open(COOKIE_FILE, "w+")as file:
-            #     file.write(f"JSESSIONID={cookies['cookies']};")
-
-            print("获取cookie成功")
-            return f"JSESSIONID={cookies['JSESSIONID']};"
-        print("登录失败")
+            print(cookies)
+            return cookies
+        else:
+            print("登录失败, 正在重试...")
+            self.llogin()
         return
 
 
