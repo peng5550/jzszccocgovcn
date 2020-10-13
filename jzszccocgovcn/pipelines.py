@@ -11,7 +11,6 @@ from scrapy.pipelines.images import ImagesPipeline
 
 class JzszccocgovcnPipeline(object):
 
-
     def __init__(self, settings):
         self.host = settings.get("HOST")
         self.port = settings.get("PORT")
