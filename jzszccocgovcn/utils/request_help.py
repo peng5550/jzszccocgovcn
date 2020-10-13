@@ -23,16 +23,16 @@ def print_url_params(url_params):
 
 if __name__ == '__main__':
     header_text = '''
+Host: cjrk.hbcic.net.cn
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
 Accept-Encoding: gzip, deflate
 Accept-Language: zh-CN,zh;q=0.9
-Cache-Control: no-cache
-Connection: keep-alive
-Cookie: JSESSIONID=6CF0D1C1E43B7C241306EC1B815F8777; DWRSESSIONID=0otJlx1wveT68UkQin~ahzdFiz6ph~eshkn
-Host: jzszc.coc.gov.cn
-Pragma: no-cache
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
+Cookie: FSSBBIl1UgzbN7NS=5QUWPrQ.TJsbsW1I2WGE79QbKBJVsxx2WLSu5uGjEdoag7FWtrqqXOwVYnpv2JR3_VqZHPbpMBKWMLzok962lga; FSSBBIl1UgzbN7NT=5UgH6F25keCLqqqmTDgWtaA91wTkFsugelFI8rI4mm_NJRMc47dGRu7LSTD.gggO3A0IeWwtHBp3jO_oAH6aBOqHtKTF0nBIiFIQd4a9jU_psn7rJVX31rPTWX1tI6WMylHnPtxiAmAgIvzjJY9bo7_L0CktVzj8lGUnxgaLqEvWdksJbDCKc.HgFPcYb9_gex2Dp6d_uce5IOE6ncJAK61QPrYXQntWSjbAPuQRBgFDW4Jk.sTLY.hVrSqVCC1IxtNoeNbuMWKAD65Qhp5..Rv
+
 
 
 

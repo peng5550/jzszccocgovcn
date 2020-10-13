@@ -112,8 +112,8 @@ class ProxyMiddleware(object):
     def __init__(self):
         self.proxyServer = "http://http-dyn.abuyun.com:9020"
         # 代理隧道验证信息
-        self.proxyUser = "H336497W0SV6218D"
-        self.proxyPass = "D72D9741E01F981D"
+        self.proxyUser = "HL8DHM82N5WP3E9D"
+        self.proxyPass = "4FABA9DCDFE545A9"
         # login
         self.login = loginProcessing()
         self.cookies = self.addCookieToHeaders()
