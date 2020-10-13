@@ -60,7 +60,7 @@ class JzszccocgovcnPipeline(object):
             return False
 
     def process_item(self, item, spider):
-        item_info = {"registerFlowId": item["data"]["registerFlowId"]}
+        item_info = {"idNo": item["data"]["idNo"]}
         if not self.select_data(table_name=self.table, item_info=item_info):
             self.insert_data(table_name=self.table, item_info=item["data"])
         return item
